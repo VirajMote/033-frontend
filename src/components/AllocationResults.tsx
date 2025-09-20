@@ -11,15 +11,19 @@ export interface AllocationResult {
   Internship: string;
   Score: number;
   Reason: string;
-  Category?: string;
+  Category: string;
+  Gender: string;
+  Area: string;
+  "Past Participation": string;
 }
 
 interface AllocationResultsProps {
   results: AllocationResult[];
   onReset: () => void;
+  onViewAnalytics: () => void;
 }
 
-export const AllocationResults: React.FC<AllocationResultsProps> = ({ results, onReset }) => {
+export const AllocationResults: React.FC<AllocationResultsProps> = ({ results, onReset, onViewAnalytics }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState<keyof AllocationResult>('Score');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
@@ -29,7 +33,11 @@ export const AllocationResults: React.FC<AllocationResultsProps> = ({ results, o
       (result) =>
         result.Candidate.toLowerCase().includes(searchTerm.toLowerCase()) ||
         result.Internship.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        result.Reason.toLowerCase().includes(searchTerm.toLowerCase())
+        result.Reason.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        result.Category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        result.Gender.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        result.Area.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        result["Past Participation"].toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     filtered.sort((a, b) => {
@@ -102,7 +110,7 @@ export const AllocationResults: React.FC<AllocationResultsProps> = ({ results, o
           <Table>
             <TableHeader className="sticky top-0 bg-background z-10">
               <TableRow>
-                {(['Candidate', 'Internship', 'Score', 'Reason'] as const).map((field) => (
+                {(['Candidate', 'Internship', 'Score', 'Reason', 'Category', 'Gender', 'Area', 'Past Participation'] as const).map((field) => (
                   <TableHead 
                     key={field}
                     className="cursor-pointer hover:bg-accent/50 transition-colors"
@@ -129,12 +137,28 @@ export const AllocationResults: React.FC<AllocationResultsProps> = ({ results, o
                   <TableCell className="max-w-xs truncate" title={result.Reason}>
                     {result.Reason}
                   </TableCell>
+                  <TableCell>{result.Category}</TableCell>
+                  <TableCell>{result.Gender}</TableCell>
+                  <TableCell>{result.Area}</TableCell>
+                  <TableCell>{result["Past Participation"]}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </div>
       </CardContent>
+      
+      <div className="p-6 border-t bg-muted/20">
+        <div className="flex justify-center">
+          <Button 
+            onClick={onViewAnalytics}
+            variant="default"
+            className="bg-gradient-primary hover:bg-gradient-primary/90 text-white px-8 py-2 shadow-elegant"
+          >
+            View Analytics
+          </Button>
+        </div>
+      </div>
     </Card>
   );
 };

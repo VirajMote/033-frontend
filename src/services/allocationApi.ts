@@ -42,12 +42,19 @@ export const generateMockAllocation = async (
         'Optimal fit based on capacity and skills'
       ];
 
+      const genders = ['Male', 'Female', 'Other'];
+      const areas = ['Urban', 'Rural', 'Semi-Urban'];
+      const pastParticipation = ['Yes', 'No', 'First Time'];
+
       return {
         Candidate: candidate.name,
         Internship: internship?.title || 'Software Development Intern',
         Score: score,
         Reason: reasons[Math.floor(Math.random() * reasons.length)],
-        Category: candidate.category
+        Category: candidate.category,
+        Gender: genders[Math.floor(Math.random() * genders.length)],
+        Area: areas[Math.floor(Math.random() * areas.length)],
+        "Past Participation": pastParticipation[Math.floor(Math.random() * pastParticipation.length)]
       };
     });
 

@@ -26,6 +26,9 @@ export interface AllocationResponse {
     Internship: string;
     Score: number;
     Reason: string;
-    Category?: string;
+    Category: string;
+    Gender: string;
+    Area: string;
+    "Past Participation": string;
   }>;
 }
