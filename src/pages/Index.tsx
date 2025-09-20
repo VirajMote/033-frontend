@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FileUpload } from '@/components/FileUpload';
 import { AllocationResults, AllocationResult } from '@/components/AllocationResults';
-import { CategoryChart } from '@/components/CategoryChart';
 import Analytics from './Analytics';
 import { callAllocationAPI } from '@/services/allocationApi';
 import { useToast } from '@/hooks/use-toast';
@@ -130,17 +129,12 @@ const Index = () => {
         {/* Results */}
         {results.length > 0 && (
           <div className="space-y-8">
-            <div className="grid lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2">
-                <AllocationResults 
-                  results={results} 
-                  onReset={handleReset} 
-                  onViewAnalytics={handleViewAnalytics}
-                />
-              </div>
-              <div>
-                <CategoryChart results={results} categories={CANDIDATE_CATEGORIES} />
-              </div>
+            <div className="max-w-full">
+              <AllocationResults 
+                results={results} 
+                onReset={handleReset} 
+                onViewAnalytics={handleViewAnalytics}
+              />
             </div>
           </div>
         )}

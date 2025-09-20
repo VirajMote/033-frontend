@@ -11,7 +11,7 @@ interface AnalyticsProps {
 }
 
 const Analytics: React.FC<AnalyticsProps> = ({ results, onBack }) => {
-  const COLORS = ['hsl(var(--primary))', 'hsl(var(--secondary))', 'hsl(var(--accent))', 'hsl(var(--muted))', '#8884d8', '#82ca9d', '#ffc658', '#ff7c7c'];
+  const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4', '#84CC16', '#F97316'];
 
   // Process data for charts
   const chartData = useMemo(() => {
@@ -85,15 +85,16 @@ const Analytics: React.FC<AnalyticsProps> = ({ results, onBack }) => {
       comparisonChart
     };
   }, [results]);
+
   return (
     <div className="min-h-screen bg-gradient-subtle">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex items-center mb-8">
+        <div className="flex items-center mb-12">
           <Button 
             onClick={onBack}
             variant="outline"
-            className="mr-4"
+            className="mr-6"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Results
@@ -102,40 +103,48 @@ const Analytics: React.FC<AnalyticsProps> = ({ results, onBack }) => {
             <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
               Analytics Dashboard
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground mt-2">
               Comprehensive analysis of allocation results
             </p>
           </div>
         </div>
 
-        {/* Analytics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* First Row - Main Charts */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-10">
           {/* 1. Category Distribution */}
           <Card className="shadow-elegant">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <PieChart className="h-5 w-5 mr-2 text-primary" />
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center text-xl">
+                <PieChart className="h-6 w-6 mr-3 text-primary" />
                 Category Distribution
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64">
+              <div className="h-80 p-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <RechartsPieChart>
                     <Pie
                       data={chartData.categoryChart}
                       cx="50%"
                       cy="50%"
-                      outerRadius={80}
+                      outerRadius={100}
                       fill="#8884d8"
                       dataKey="value"
                       label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      labelLine={false}
                     >
                       {chartData.categoryChart.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#ffffff', 
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
                   </RechartsPieChart>
                 </ResponsiveContainer>
               </div>
@@ -144,54 +153,72 @@ const Analytics: React.FC<AnalyticsProps> = ({ results, onBack }) => {
 
           {/* 2. Location Distribution */}
           <Card className="shadow-elegant">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <BarChart3 className="h-5 w-5 mr-2 text-primary" />
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center text-xl">
+                <BarChart3 className="h-6 w-6 mr-3 text-primary" />
                 Location Distribution
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64">
+              <div className="h-80 p-4">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData.locationChart} layout="horizontal">
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" />
-                    <YAxis dataKey="name" type="category" width={80} />
-                    <Tooltip />
-                    <Bar dataKey="value" fill="hsl(var(--primary))" />
+                  <BarChart data={chartData.locationChart} layout="horizontal" margin={{ left: 20, right: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis type="number" tick={{ fontSize: 12 }} />
+                    <YAxis dataKey="name" type="category" width={80} tick={{ fontSize: 12 }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#ffffff', 
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
+                    <Bar dataKey="value" fill="#10B981" radius={[0, 4, 4, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
+        </div>
 
+        {/* Second Row - Allocation and Score */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-10">
           {/* 3. Allocation vs Unallocation */}
           <Card className="shadow-elegant">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <PieChart className="h-5 w-5 mr-2 text-primary" />
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center text-xl">
+                <PieChart className="h-6 w-6 mr-3 text-primary" />
                 Allocation vs Unallocation
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64">
+              <div className="h-80 p-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <RechartsPieChart>
                     <Pie
                       data={chartData.allocationChart}
                       cx="50%"
                       cy="50%"
-                      innerRadius={40}
-                      outerRadius={80}
+                      innerRadius={60}
+                      outerRadius={100}
                       fill="#8884d8"
                       dataKey="value"
                       label={({ name, percentage }) => `${name}: ${percentage}%`}
+                      labelLine={false}
                     >
                       {chartData.allocationChart.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={index === 0 ? 'hsl(var(--primary))' : 'hsl(var(--destructive))'} />
+                        <Cell key={`cell-${index}`} fill={index === 0 ? '#10B981' : '#EF4444'} />
                       ))}
                     </Pie>
-                    <Tooltip />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#ffffff', 
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
                   </RechartsPieChart>
                 </ResponsiveContainer>
               </div>
@@ -200,21 +227,28 @@ const Analytics: React.FC<AnalyticsProps> = ({ results, onBack }) => {
 
           {/* 4. Score Distribution */}
           <Card className="shadow-elegant">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <BarChart3 className="h-5 w-5 mr-2 text-primary" />
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center text-xl">
+                <BarChart3 className="h-6 w-6 mr-3 text-primary" />
                 Score Distribution
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64">
+              <div className="h-80 p-4">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData.scoreChart}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="range" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="hsl(var(--secondary))" />
+                  <BarChart data={chartData.scoreChart} margin={{ left: 20, right: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis dataKey="range" tick={{ fontSize: 12 }} />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#ffffff', 
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
+                    <Bar dataKey="count" fill="#3B82F6" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -222,31 +256,43 @@ const Analytics: React.FC<AnalyticsProps> = ({ results, onBack }) => {
           </Card>
         </div>
 
-        {/* Second Row - Capacity and Comparison */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        {/* Third Row - Capacity and Comparison */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-10">
           {/* 5. Internship Capacity Utilization */}
           <Card className="shadow-elegant">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <TrendingUp className="h-5 w-5 mr-2 text-primary" />
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center text-xl">
+                <TrendingUp className="h-6 w-6 mr-3 text-primary" />
                 Internship Capacity Utilization
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64">
+              <div className="h-80 p-4">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData.capacityChart}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} />
-                    <YAxis />
+                  <BarChart data={chartData.capacityChart} margin={{ bottom: 60, left: 20, right: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis 
+                      dataKey="name" 
+                      angle={-45} 
+                      textAnchor="end" 
+                      height={80} 
+                      tick={{ fontSize: 10 }}
+                    />
+                    <YAxis tick={{ fontSize: 12 }} />
                     <Tooltip 
                       formatter={(value, name) => [
                         name === 'filled' ? `${value} filled` : `${value} total`, 
                         name === 'filled' ? 'Filled' : 'Capacity'
                       ]}
+                      contentStyle={{ 
+                        backgroundColor: '#ffffff', 
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      }}
                     />
-                    <Bar dataKey="total" fill="hsl(var(--muted))" name="total" />
-                    <Bar dataKey="filled" fill="hsl(var(--primary))" name="filled" />
+                    <Bar dataKey="total" fill="#E5E7EB" name="total" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="filled" fill="#10B981" name="filled" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -255,22 +301,61 @@ const Analytics: React.FC<AnalyticsProps> = ({ results, onBack }) => {
 
           {/* 6. Comparison Chart */}
           <Card className="shadow-elegant">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <BarChart3 className="h-5 w-5 mr-2 text-primary" />
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center text-xl">
+                <BarChart3 className="h-6 w-6 mr-3 text-primary" />
                 Fairness Boost Comparison
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64">
+              <div className="h-80 p-4">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData.comparisonChart}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="category" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="withoutBoost" fill="hsl(var(--muted))" name="Without Boost" />
-                    <Bar dataKey="withBoost" fill="hsl(var(--primary))" name="With Boost" />
+                  <BarChart data={chartData.comparisonChart} margin={{ left: 20, right: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis dataKey="category" tick={{ fontSize: 12 }} />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#ffffff', 
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
+                    <Bar dataKey="withoutBoost" fill="#9CA3AF" name="Without Boost" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="withBoost" fill="#3B82F6" name="With Boost" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Fourth Row - Detailed Category Chart */}
+        <div className="grid grid-cols-1 gap-8 mb-10">
+          <Card className="shadow-elegant">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center text-xl">
+                <BarChart3 className="h-6 w-6 mr-3 text-primary" />
+                Detailed Category Breakdown
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-80 p-4">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData.categoryChart} margin={{ left: 20, right: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#ffffff', 
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
+                    <Bar dataKey="value" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -279,18 +364,18 @@ const Analytics: React.FC<AnalyticsProps> = ({ results, onBack }) => {
         </div>
 
         {/* Summary Stats */}
-        <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="p-4 shadow-elegant">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <Card className="p-6 shadow-elegant">
             <div className="text-center">
-              <h3 className="font-semibold text-sm text-muted-foreground">Total Allocations</h3>
-              <p className="text-2xl font-bold text-primary">{results.length}</p>
+              <h3 className="font-semibold text-sm text-muted-foreground mb-2">Total Allocations</h3>
+              <p className="text-3xl font-bold text-primary">{results.length}</p>
             </div>
           </Card>
           
-          <Card className="p-4 shadow-elegant">
+          <Card className="p-6 shadow-elegant">
             <div className="text-center">
-              <h3 className="font-semibold text-sm text-muted-foreground">Average Score</h3>
-              <p className="text-2xl font-bold text-success">
+              <h3 className="font-semibold text-sm text-muted-foreground mb-2">Average Score</h3>
+              <p className="text-3xl font-bold text-success">
                 {results.length > 0 
                   ? Math.round(results.reduce((sum, r) => sum + r.Score, 0) / results.length)
                   : 0
@@ -299,19 +384,19 @@ const Analytics: React.FC<AnalyticsProps> = ({ results, onBack }) => {
             </div>
           </Card>
 
-          <Card className="p-4 shadow-elegant">
+          <Card className="p-6 shadow-elegant">
             <div className="text-center">
-              <h3 className="font-semibold text-sm text-muted-foreground">Unique Categories</h3>
-              <p className="text-2xl font-bold text-warning">
+              <h3 className="font-semibold text-sm text-muted-foreground mb-2">Unique Categories</h3>
+              <p className="text-3xl font-bold text-warning">
                 {new Set(results.map(r => r.Category)).size}
               </p>
             </div>
           </Card>
 
-          <Card className="p-4 shadow-elegant">
+          <Card className="p-6 shadow-elegant">
             <div className="text-center">
-              <h3 className="font-semibold text-sm text-muted-foreground">High Scores (80+)</h3>
-              <p className="text-2xl font-bold text-success">
+              <h3 className="font-semibold text-sm text-muted-foreground mb-2">High Scores (80+)</h3>
+              <p className="text-3xl font-bold text-success">
                 {results.filter(r => r.Score >= 80).length}
               </p>
             </div>
