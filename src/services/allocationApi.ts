@@ -42,9 +42,8 @@ export const generateMockAllocation = async (
         'Optimal fit based on capacity and skills'
       ];
 
-      const genders = ['Male', 'Female', 'Other'];
-      const areas = ['Urban', 'Rural', 'Semi-Urban'];
-      const pastParticipation = ['Yes', 'No', 'First Time'];
+      const genders = ['Male', 'Female'];
+      const pastParticipation = candidate.past_internship === 'TRUE' ? 'Yes' : 'No';
 
       return {
         Candidate: candidate.name,
@@ -53,8 +52,8 @@ export const generateMockAllocation = async (
         Reason: reasons[Math.floor(Math.random() * reasons.length)],
         Category: candidate.category,
         Gender: genders[Math.floor(Math.random() * genders.length)],
-        Area: areas[Math.floor(Math.random() * areas.length)],
-        "Past Participation": pastParticipation[Math.floor(Math.random() * pastParticipation.length)]
+        Area: candidate.category, // Using category as area (Rural/Urban)
+        "Past Participation": pastParticipation
       };
     });
 

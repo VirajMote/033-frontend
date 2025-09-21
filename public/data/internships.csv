@@ -1,0 +1,11 @@
+id,title,required_skills,qualifications,location,organization,description,sector,capacity
+101,Data Science Intern,"python,sql,pandas","B.Tech or M.Tech",delhi,Tech Corp India,"Work on cutting-edge ML projects",technology,5
+102,Backend Developer Intern,"javascript,nodejs,mongodb","B.E. or MCA",mumbai,Startup Hub,"Build scalable backend systems",ecommerce,3
+103,Policy Research Intern,"research,writing,communication","Masters in Public Policy",delhi,Ministry of Electronics & IT,"Research emerging technologies",govtech,2
+104,Healthcare Analytics Intern,"python,pandas,sql","B.Tech or M.Sc.",mumbai,MedTech Solutions,"Analyze healthcare data",healthcare,4
+105,Fintech Developer Intern,"java,spring,mysql","B.E. or B.Tech",bangalore,PayNext Financial,"Develop payment processing systems",fintech,3
+106,Marketing Intern,"seo,sem,social_media","MBA or BBA",hyderabad,MarketMinds,"Create and manage online marketing campaigns",marketing,2
+107,Embedded Systems Intern,"c++,embedded_c,linux","B.Tech in ECE",chennai,Gadgetron,"Develop firmware for IoT devices",iot,3
+108,UI/UX Design Intern,"figma,sketch,adobe_xd","B.Des or equivalent",pune,DesignFirst,"Create user-friendly interfaces",design,2
+109,Sales Intern,"communication,negotiation,crm","BBA or MBA",kolkata,SellSmart,"Assist the sales team in lead generation",sales,5
+110,AI Research Intern,"python,pytorch,tensorflow","M.Tech in AI",bangalore,AI Innovators,"Work on advanced AI research projects",ai,2

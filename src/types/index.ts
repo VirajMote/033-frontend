@@ -2,16 +2,22 @@ export interface Candidate {
   id: string;
   name: string;
   skills: string;
-  location: string;
+  qualifications: string;
+  location_preferences: string;
+  sector_interests: string;
   category: string;
-  past: string;
+  past_internship: string;
 }
 
 export interface Internship {
   id: string;
   title: string;
-  skills: string;
+  required_skills: string;
+  qualifications: string;
   location: string;
+  organization: string;
+  description: string;
+  sector: string;
   capacity: number;
 }
 

@@ -23,13 +23,13 @@ const Analytics: React.FC<AnalyticsProps> = ({ results, onBack }) => {
     
     const categoryChart = Object.entries(categoryData).map(([name, value]) => ({ name, value }));
 
-    // 2. Location Distribution (using Area field)
-    const locationData = results.reduce((acc, result) => {
+    // 2. Area Distribution (using Area field which contains Rural/Urban)
+    const areaData = results.reduce((acc, result) => {
       acc[result.Area] = (acc[result.Area] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
     
-    const locationChart = Object.entries(locationData).map(([name, value]) => ({ name, value }));
+    const locationChart = Object.entries(areaData).map(([name, value]) => ({ name, value }));
 
     // 3. Allocation vs Unallocation (simulated data)
     const allocated = results.length;
@@ -151,21 +151,32 @@ const Analytics: React.FC<AnalyticsProps> = ({ results, onBack }) => {
             </CardContent>
           </Card>
 
-          {/* 2. Location Distribution */}
+          {/* 2. Area Distribution */}
           <Card className="shadow-elegant">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center text-xl">
-                <BarChart3 className="h-6 w-6 mr-3 text-primary" />
-                Location Distribution
+                <PieChart className="h-6 w-6 mr-3 text-primary" />
+                Area Distribution
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-80 p-4">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData.locationChart} layout="horizontal" margin={{ left: 20, right: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                    <XAxis type="number" tick={{ fontSize: 12 }} />
-                    <YAxis dataKey="name" type="category" width={80} tick={{ fontSize: 12 }} />
+                  <RechartsPieChart>
+                    <Pie
+                      data={chartData.locationChart}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      labelLine={false}
+                    >
+                      {chartData.locationChart.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
                     <Tooltip 
                       contentStyle={{ 
                         backgroundColor: '#ffffff', 
@@ -174,8 +185,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ results, onBack }) => {
                         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
                       }}
                     />
-                    <Bar dataKey="value" fill="#10B981" radius={[0, 4, 4, 0]} />
-                  </BarChart>
+                  </RechartsPieChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>
