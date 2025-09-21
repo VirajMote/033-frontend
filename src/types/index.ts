@@ -5,7 +5,8 @@ export interface Candidate {
   qualifications: string;
   location_preferences: string;
   sector_interests: string;
-  category: string;
+  Category: string; // Reservation category (Gen, OBC, EWS, ST, SC)
+  category: string; // Area (Rural, Urban)
   past_internship: string;
 }
 

@@ -43,16 +43,16 @@ export const generateMockAllocation = async (
       ];
 
       const genders = ['Male', 'Female'];
-      const pastParticipation = candidate.past_internship === 'TRUE' ? 'Yes' : 'No';
+      const pastParticipation = candidate.past_internship === 'True' ? 'Yes' : 'No';
 
       return {
         Candidate: candidate.name,
         Internship: internship?.title || 'Software Development Intern',
         Score: score,
         Reason: reasons[Math.floor(Math.random() * reasons.length)],
-        Category: candidate.category,
+        Category: candidate.Category, // Reservation category
         Gender: genders[Math.floor(Math.random() * genders.length)],
-        Area: candidate.category, // Using category as area (Rural/Urban)
+        Area: candidate.category, // Area (Rural/Urban)
         "Past Participation": pastParticipation
       };
     });
